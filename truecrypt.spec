@@ -5,10 +5,10 @@
 %bcond_with	verbose		# verbose build (V=1)
 
 Summary:	TrueCrypt - Free Open-Source Disk Encryption Software
-#Summary(pl):	
+#Summary(pl):
 Name:		truecrypt
 Version:	4.2a
-Release:	0.2
+Release:	0.1
 License:	GPL
 Group:		Base/Kernel
 Source0:	%{name}-%{version}-source-code.tar.gz
@@ -25,25 +25,32 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %description
 Main Features:
 
-* Creates a virtual encrypted disk within a file and mounts it as a real disk.
-* Encrypts an entire hard disk partition or a storage device such as USB flash drive.
-* Encryption is automatic, real-time (on-the-fly) and transparent.
-* Provides two levels of plausible deniability, in case an adversary forces you to reveal the password:
-  1) Hidden volume (steganography ? more information may be found here).
-  2) No TrueCrypt volume can be identified (volumes cannot be distinguished from random data).
-* Encryption algorithms: AES-256, Blowfish (448-bit key), CAST5, Serpent, Triple DES, and Twofish.
-  Mode of operation: LRW  (CBC supported as legacy).
+- Creates a virtual encrypted disk within a file and mounts it as a
+  real disk.
+- Encrypts an entire hard disk partition or a storage device such as
+  USB flash drive.
+- Encryption is automatic, real-time (on-the-fly) and transparent.
+- Provides two levels of plausible deniability, in case an adversary
+  forces you to reveal the password:
+  1) Hidden volume (steganography ? more information may be
+  found here).
+  2) No TrueCrypt volume can be identified (volumes cannot be 
+  distinguished from random data).
+- Encryption algorithms: AES-256, Blowfish (448-bit key), CAST5,
+  Serpent, Triple DES, and Twofish. Mode of operation: LRW (CBC
+  supported as legacy).
 
 %description -l pl
 
 %package -n kernel%{_alt_kernel}-misc-%{name}
+Group:		Base/Kernel
 Summary:	Kernel modules for %{name}
 Summary(pl):	Modu³y j±dra dla programu %{name}
 Release:	%{release}@%{_kernel_ver_str}
 Group:		base/kernel
 %if %{with dist_kernel}
 %requires_releq_kernel_up
-Requires(postun):       %releq_kernel_up
+Requires(postun):	%releq_kernel_up
 %endif
 Requires:	%{name} = %{version}
 Requires:	modutils >= 2.4.6-4
@@ -51,13 +58,14 @@ Requires:	modutils >= 2.4.6-4
 %description -n kernel%{_alt_kernel}-misc-%{name}
 
 %package -n kernel%{_alt_kernel}-smp-misc-%{name}
+Group:		Base/Kernel
 Summary:	Kernel SMP modules for %{name}
 Summary(pl):	Modu³y SMP j±dra dla programu %{name}
-Release:	%{release}
+Release:	%{release}@%{_kernel_ver_str}
 Group:		base/kernel
 %if %{with dist_kernel}
 %requires_releq_kernel_smp
-Requires(postun):       %releq_kernel_smp
+Requires(postun):	%releq_kernel_smp
 %endif
 Requires:	%{name} = %{version}
 Requires:	modutils >= 2.4.6-4
@@ -107,8 +115,8 @@ rm -rf $RPM_BUILD_ROOT
 
 install -d $RPM_BUILD_ROOT/bin $RPM_BUILD_ROOT/lib/modules/%{_kernel_ver}{,smp}/misc
 install Linux/Cli/%{name} $RPM_BUILD_ROOT/bin
-install -d $RPM_BUILD_ROOT/%{_mandir}/man1
-install Linux/Cli/Man/%{name}.1 $RPM_BUILD_ROOT/%{_mandir}/man1
+install -d $RPM_BUILD_ROOT%{_mandir}/man1
+install Linux/Cli/Man/%{name}.1 $RPM_BUILD_ROOT%{_mandir}/man1
 
 for i in truecrypt; do
 install Linux/Kernel/$i-%{?with_dist_kernel:up}%{!?with_dist_kernel:nondist}.ko \
