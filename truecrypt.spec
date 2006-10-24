@@ -1,9 +1,14 @@
+# TODO
+# - requires modutils???
+# - missing kernel-module-build BR?
+# - License: specfile from r1.1 contained different License than GPL
+#
 # Conditional build:
 %bcond_without	dist_kernel	# allow non-distribution kernel
 %bcond_without	kernel		# don't build kernel modules
 %bcond_without	smp		# don't build SMP module
 %bcond_with	verbose		# verbose build (V=1)
-
+#
 Summary:	TrueCrypt - Free Open-Source Disk Encryption Software
 #Summary(pl):
 Name:		truecrypt
@@ -14,7 +19,7 @@ Group:		Base/Kernel
 Source0:	%{name}-%{version}-source-code.tar.gz
 Patch0:		%{name}-build.patch
 Patch1:		%{name}-4.2a_kernel-2.6.18-rc1_fix.patch
-URL:		http://www.truecrypt.org
+URL:		http://www.truecrypt.org/
 %if %{with kernel}
 Requires(post,postun):	/sbin/depmod
 %endif
@@ -24,7 +29,6 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 Main Features:
-
 - Creates a virtual encrypted disk within a file and mounts it as a
   real disk.
 - Encrypts an entire hard disk partition or a storage device such as
@@ -34,7 +38,7 @@ Main Features:
   forces you to reveal the password:
   1) Hidden volume (steganography ? more information may be
   found here).
-  2) No TrueCrypt volume can be identified (volumes cannot be 
+  2) No TrueCrypt volume can be identified (volumes cannot be
   distinguished from random data).
 - Encryption algorithms: AES-256, Blowfish (448-bit key), CAST5,
   Serpent, Triple DES, and Twofish. Mode of operation: LRW (CBC
@@ -43,11 +47,10 @@ Main Features:
 %description -l pl
 
 %package -n kernel%{_alt_kernel}-misc-%{name}
-Group:		Base/Kernel
 Summary:	Kernel modules for %{name}
 Summary(pl):	Modu³y j±dra dla programu %{name}
 Release:	%{release}@%{_kernel_ver_str}
-Group:		base/kernel
+Group:		Base/Kernel
 %if %{with dist_kernel}
 %requires_releq_kernel_up
 Requires(postun):	%releq_kernel_up
@@ -58,11 +61,10 @@ Requires:	modutils >= 2.4.6-4
 %description -n kernel%{_alt_kernel}-misc-%{name}
 
 %package -n kernel%{_alt_kernel}-smp-misc-%{name}
-Group:		Base/Kernel
 Summary:	Kernel SMP modules for %{name}
 Summary(pl):	Modu³y SMP j±dra dla programu %{name}
 Release:	%{release}@%{_kernel_ver_str}
-Group:		base/kernel
+Group:		Base/Kernel
 %if %{with dist_kernel}
 %requires_releq_kernel_smp
 Requires(postun):	%releq_kernel_smp
