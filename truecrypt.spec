@@ -1,4 +1,3 @@
-# http://www.raoul.shacknet.nu/packages/specs/truecrypt.rcn.spec
 # Conditional build:
 %bcond_without	dist_kernel	# allow non-distribution kernel
 %bcond_without	kernel		# don't build kernel modules
@@ -15,7 +14,6 @@ Group:		Base/Kernel
 Source0:	%{name}-%{version}-source-code.tar.gz
 Patch0:		%{name}-build.patch
 Patch1:		%{name}-4.2a_kernel-2.6.18-rc1_fix.patch
-Patch2:		%{name}-4.2-nosectorformat.patch
 URL:		http://www.truecrypt.org
 %if %{with kernel}
 Requires(post,postun):	/sbin/depmod
@@ -70,7 +68,6 @@ Requires:	modutils >= 2.4.6-4
 %setup -q
 %patch0 -p1
 %patch1 -p1
-#%patch2 -p1
 
 %build
 # kernel module(s)
