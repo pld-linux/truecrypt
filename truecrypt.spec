@@ -7,10 +7,11 @@
 %bcond_without	dist_kernel	# allow non-distribution kernel
 %bcond_without	kernel		# don't build kernel modules
 %bcond_without	smp		# don't build SMP module
+%bcond_without	userspace	# don't build userspace utilities
 %bcond_with	verbose		# verbose build (V=1)
 #
 Summary:	TrueCrypt - Free Open-Source Disk Encryption Software
-#Summary(pl):
+Summary(pl):	TrueCrypt - wolnodostêpne oprogramowanie do szyfrowania dysków
 Name:		truecrypt
 Version:	4.2a
 Release:	0.1
@@ -36,8 +37,7 @@ Main Features:
 - Encryption is automatic, real-time (on-the-fly) and transparent.
 - Provides two levels of plausible deniability, in case an adversary
   forces you to reveal the password:
-  1) Hidden volume (steganography ? more information may be
-  found here).
+  1) Hidden volume (steganography).
   2) No TrueCrypt volume can be identified (volumes cannot be
   distinguished from random data).
 - Encryption algorithms: AES-256, Blowfish (448-bit key), CAST5,
@@ -45,10 +45,24 @@ Main Features:
   supported as legacy).
 
 %description -l pl
+G³ówne cechy:
+- Tworzenie wirtualnego szyfrowanego dysku w pliku i montowanie go
+  jako prawdziwego dysku.
+- Szyfrowanie ca³ej partycji twardego dysku lub urz±dzenia takiego jak
+  dysk flash USB.
+- Szyfrowanie automatyczne, w czasie rzeczywistym i przezroczyste.
+- Dwa poziomy prawdopodobnych utrudnieñ, w przypadku, gdy wróg zmusza
+  do wyjawienia has³a:
+  1) Ukryty wolumen (steganografia).
+  2) ¯aden wolumen TrueCrypt nie mo¿e byæ zidentyfikowany (wolumeny
+  nie dadz± siê odró¿niæ od losowych danych).
+- Algorytmy szyfrowania: AES-256, Blowfish (klucz 448-bitowy), CAST5,
+  Serpent, Triple DES oraz Twofish. Tryby dzia³ania: LRW (CBC
+  obs³ugiwane dla wstecznej kompatybilno¶ci).
 
 %package -n kernel%{_alt_kernel}-misc-%{name}
-Summary:	Kernel modules for %{name}
-Summary(pl):	Modu³y j±dra dla programu %{name}
+Summary:	Linux kernel modules for TrueCrypt
+Summary(pl):	Modu³y j±dra Linuksa dla TrueCrypta
 Release:	%{release}@%{_kernel_ver_str}
 Group:		Base/Kernel
 %if %{with dist_kernel}
@@ -59,10 +73,14 @@ Requires:	%{name} = %{version}
 Requires:	modutils >= 2.4.6-4
 
 %description -n kernel%{_alt_kernel}-misc-%{name}
+Linux kernel modules for TrueCrypt.
+
+%description -n kernel%{_alt_kernel}-misc-%{name} -l pl
+Modu³y j±dra Linuksa dla TrueCrypta
 
 %package -n kernel%{_alt_kernel}-smp-misc-%{name}
-Summary:	Kernel SMP modules for %{name}
-Summary(pl):	Modu³y SMP j±dra dla programu %{name}
+Summary:	Linux SMP kernel modules for TrueCrypt
+Summary(pl):	Modu³y j±dra Linuksa SMP dla TrueCrypta
 Release:	%{release}@%{_kernel_ver_str}
 Group:		Base/Kernel
 %if %{with dist_kernel}
@@ -73,6 +91,10 @@ Requires:	%{name} = %{version}
 Requires:	modutils >= 2.4.6-4
 
 %description -n kernel%{_alt_kernel}-smp-misc-%{name}
+Linux SMP kernel modules for TrueCrypt.
+
+%description -n kernel%{_alt_kernel}-smp-misc-%{name} -l pl
+Modu³y j±dra Linuksa SMP dla TrueCrypta.
 
 %prep
 %setup -q
@@ -80,6 +102,7 @@ Requires:	modutils >= 2.4.6-4
 %patch1 -p1
 
 %build
+%if %{with kernel}
 # kernel module(s)
 cd Linux/Kernel
 for cfg in %{?with_dist_kernel:%{?with_smp:smp} up}%{!?with_dist_kernel:nondist}; do
@@ -111,15 +134,19 @@ for cfg in %{?with_dist_kernel:%{?with_smp:smp} up}%{!?with_dist_kernel:nondist}
 	done
 	cd -
 done
+%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-install -d $RPM_BUILD_ROOT/bin $RPM_BUILD_ROOT/lib/modules/%{_kernel_ver}{,smp}/misc
+%if %{with userspace}
+install -d $RPM_BUILD_ROOT{/bin,%{_mandir}/man1}
 install Linux/Cli/%{name} $RPM_BUILD_ROOT/bin
-install -d $RPM_BUILD_ROOT%{_mandir}/man1
 install Linux/Cli/Man/%{name}.1 $RPM_BUILD_ROOT%{_mandir}/man1
+%endif
 
+%if %{with kernel}
+install -d $RPM_BUILD_ROOT/lib/modules/%{_kernel_ver}{,smp}/misc
 for i in truecrypt; do
 install Linux/Kernel/$i-%{?with_dist_kernel:up}%{!?with_dist_kernel:nondist}.ko \
 	$RPM_BUILD_ROOT/lib/modules/%{_kernel_ver}/misc/$i.ko
@@ -129,6 +156,7 @@ for i in truecrypt; do
 install Linux/Kernel/$i-smp.ko \
 	$RPM_BUILD_ROOT/lib/modules/%{_kernel_ver}smp/misc/$i.ko
 done
+%endif
 %endif
 
 %clean
@@ -146,17 +174,22 @@ rm -rf $RPM_BUILD_ROOT
 %postun -n kernel%{_alt_kernel}-smp-misc-%{name}
 %depmod %{_kernel_ver}smp
 
-
+%if %{with userspace}
 %files
 %defattr(644,root,root,755)
 %doc License.txt Readme.txt
 %attr(755,root,root) /bin/%{name}
 %{_mandir}/man1/*
+%endif
 
+%if %{with kernel}
 %files -n kernel%{_alt_kernel}-misc-%{name}
 %defattr(644,root,root,755)
 /lib/modules/%{_kernel_ver}/misc/*
 
+%if %{with smp} && %{with dist_kernel}
 %files -n kernel%{_alt_kernel}-smp-misc-%{name}
 %defattr(644,root,root,755)
 /lib/modules/%{_kernel_ver}smp/misc/*
+%endif
+%endif
