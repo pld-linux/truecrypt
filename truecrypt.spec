@@ -69,7 +69,7 @@ Group:		Base/Kernel
 %requires_releq_kernel_up
 Requires(postun):	%releq_kernel_up
 %endif
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 Requires:	modutils >= 2.4.6-4
 
 %description -n kernel%{_alt_kernel}-misc-%{name}
@@ -87,7 +87,7 @@ Group:		Base/Kernel
 %requires_releq_kernel_smp
 Requires(postun):	%releq_kernel_smp
 %endif
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 Requires:	modutils >= 2.4.6-4
 
 %description -n kernel%{_alt_kernel}-smp-misc-%{name}
