@@ -17,7 +17,9 @@ Version:	4.2a
 Release:	0.1
 License:	GPL
 Group:		Base/Kernel
+# from truecrypt.org
 Source0:	%{name}-%{version}-source-code.tar.gz
+# Source0-md5:	6e60ead403fe23355f61341ccce68ff1
 Patch0:		%{name}-build.patch
 Patch1:		%{name}-4.2a_kernel-2.6.18-rc1_fix.patch
 URL:		http://www.truecrypt.org/
