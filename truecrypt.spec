@@ -11,7 +11,7 @@
 %bcond_with	verbose		# verbose build (V=1)
 #
 Summary:	TrueCrypt - Free Open-Source Disk Encryption Software
-Summary(pl):	TrueCrypt - wolnodostêpne oprogramowanie do szyfrowania dysków
+Summary(pl.UTF-8):   TrueCrypt - wolnodostÄ™pne oprogramowanie do szyfrowania dyskÃ³w
 Name:		truecrypt
 Version:	4.2a
 Release:	0.1
@@ -46,25 +46,25 @@ Main Features:
   Serpent, Triple DES, and Twofish. Mode of operation: LRW (CBC
   supported as legacy).
 
-%description -l pl
-G³ówne cechy:
+%description -l pl.UTF-8
+GÅ‚Ã³wne cechy:
 - Tworzenie wirtualnego szyfrowanego dysku w pliku i montowanie go
   jako prawdziwego dysku.
-- Szyfrowanie ca³ej partycji twardego dysku lub urz±dzenia takiego jak
+- Szyfrowanie caÅ‚ej partycji twardego dysku lub urzÄ…dzenia takiego jak
   dysk flash USB.
 - Szyfrowanie automatyczne, w czasie rzeczywistym i przezroczyste.
-- Dwa poziomy prawdopodobnych utrudnieñ, w przypadku, gdy wróg zmusza
-  do wyjawienia has³a:
+- Dwa poziomy prawdopodobnych utrudnieÅ„, w przypadku, gdy wrÃ³g zmusza
+  do wyjawienia hasÅ‚a:
   1) Ukryty wolumen (steganografia).
-  2) ¯aden wolumen TrueCrypt nie mo¿e byæ zidentyfikowany (wolumeny
-  nie dadz± siê odró¿niæ od losowych danych).
+  2) Å»aden wolumen TrueCrypt nie moÅ¼e byÄ‡ zidentyfikowany (wolumeny
+  nie dadzÄ… siÄ™ odrÃ³Å¼niÄ‡ od losowych danych).
 - Algorytmy szyfrowania: AES-256, Blowfish (klucz 448-bitowy), CAST5,
-  Serpent, Triple DES oraz Twofish. Tryby dzia³ania: LRW (CBC
-  obs³ugiwane dla wstecznej kompatybilno¶ci).
+  Serpent, Triple DES oraz Twofish. Tryby dziaÅ‚ania: LRW (CBC
+  obsÅ‚ugiwane dla wstecznej kompatybilnoÅ›ci).
 
 %package -n kernel%{_alt_kernel}-misc-%{name}
 Summary:	Linux kernel modules for TrueCrypt
-Summary(pl):	Modu³y j±dra Linuksa dla TrueCrypta
+Summary(pl.UTF-8):   ModuÅ‚y jÄ…dra Linuksa dla TrueCrypta
 Release:	%{release}@%{_kernel_ver_str}
 Group:		Base/Kernel
 %if %{with dist_kernel}
@@ -77,12 +77,12 @@ Requires:	modutils >= 2.4.6-4
 %description -n kernel%{_alt_kernel}-misc-%{name}
 Linux kernel modules for TrueCrypt.
 
-%description -n kernel%{_alt_kernel}-misc-%{name} -l pl
-Modu³y j±dra Linuksa dla TrueCrypta
+%description -n kernel%{_alt_kernel}-misc-%{name} -l pl.UTF-8
+ModuÅ‚y jÄ…dra Linuksa dla TrueCrypta
 
 %package -n kernel%{_alt_kernel}-smp-misc-%{name}
 Summary:	Linux SMP kernel modules for TrueCrypt
-Summary(pl):	Modu³y j±dra Linuksa SMP dla TrueCrypta
+Summary(pl.UTF-8):   ModuÅ‚y jÄ…dra Linuksa SMP dla TrueCrypta
 Release:	%{release}@%{_kernel_ver_str}
 Group:		Base/Kernel
 %if %{with dist_kernel}
@@ -95,8 +95,8 @@ Requires:	modutils >= 2.4.6-4
 %description -n kernel%{_alt_kernel}-smp-misc-%{name}
 Linux SMP kernel modules for TrueCrypt.
 
-%description -n kernel%{_alt_kernel}-smp-misc-%{name} -l pl
-Modu³y j±dra Linuksa SMP dla TrueCrypta.
+%description -n kernel%{_alt_kernel}-smp-misc-%{name} -l pl.UTF-8
+ModuÅ‚y jÄ…dra Linuksa SMP dla TrueCrypta.
 
 %prep
 %setup -q
