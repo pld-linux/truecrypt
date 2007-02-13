@@ -11,7 +11,7 @@
 %bcond_with	verbose		# verbose build (V=1)
 #
 Summary:	TrueCrypt - Free Open-Source Disk Encryption Software
-Summary(pl.UTF-8):   TrueCrypt - wolnodostępne oprogramowanie do szyfrowania dysków
+Summary(pl.UTF-8):	TrueCrypt - wolnodostępne oprogramowanie do szyfrowania dysków
 Name:		truecrypt
 Version:	4.2a
 Release:	0.1
@@ -64,7 +64,7 @@ Główne cechy:
 
 %package -n kernel%{_alt_kernel}-misc-%{name}
 Summary:	Linux kernel modules for TrueCrypt
-Summary(pl.UTF-8):   Moduły jądra Linuksa dla TrueCrypta
+Summary(pl.UTF-8):	Moduły jądra Linuksa dla TrueCrypta
 Release:	%{release}@%{_kernel_ver_str}
 Group:		Base/Kernel
 %if %{with dist_kernel}
@@ -82,7 +82,7 @@ Moduły jądra Linuksa dla TrueCrypta
 
 %package -n kernel%{_alt_kernel}-smp-misc-%{name}
 Summary:	Linux SMP kernel modules for TrueCrypt
-Summary(pl.UTF-8):   Moduły jądra Linuksa SMP dla TrueCrypta
+Summary(pl.UTF-8):	Moduły jądra Linuksa SMP dla TrueCrypta
 Release:	%{release}@%{_kernel_ver_str}
 Group:		Base/Kernel
 %if %{with dist_kernel}
