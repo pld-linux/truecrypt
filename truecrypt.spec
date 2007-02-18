@@ -29,7 +29,7 @@ Requires(post,postun):	/sbin/depmod
 %endif
 Requires:	device-mapper
 Requires:	losetup
-1;2c1;2cBuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 Main Features:
@@ -60,7 +60,7 @@ Główne cechy:
   2) Żaden wolumen TrueCrypt nie może być zidentyfikowany (wolumeny
   nie dadzą się odróżnić od losowych danych).
 - Algorytmy szyfrowania: AES-256, Blowfish (klucz 448-bitowy), CAST5,
-1;2c1;2c  Serpent, Triple DES oraz Twofish. Tryby działania: LRW (CBC
+  Serpent, Triple DES oraz Twofish. Tryby działania: LRW (CBC
   obsługiwane dla wstecznej kompatybilności).
 
 %package -n kernel%{_alt_kernel}-misc-%{name}
