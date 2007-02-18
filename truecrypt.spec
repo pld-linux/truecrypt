@@ -14,7 +14,8 @@ Summary:	TrueCrypt - Free Open-Source Disk Encryption Software
 Summary(pl.UTF-8):	TrueCrypt - wolnodostępne oprogramowanie do szyfrowania dysków
 Name:		truecrypt
 Version:	4.2a
-Release:	0.1
+%define	   _rel 0.1
+Release:	%{_rel}
 License:	GPL
 Group:		Base/Kernel
 # from truecrypt.org
@@ -28,7 +29,7 @@ Requires(post,postun):	/sbin/depmod
 %endif
 Requires:	device-mapper
 Requires:	losetup
-BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+1;2c1;2cBuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 Main Features:
@@ -59,19 +60,19 @@ Główne cechy:
   2) Żaden wolumen TrueCrypt nie może być zidentyfikowany (wolumeny
   nie dadzą się odróżnić od losowych danych).
 - Algorytmy szyfrowania: AES-256, Blowfish (klucz 448-bitowy), CAST5,
-  Serpent, Triple DES oraz Twofish. Tryby działania: LRW (CBC
+1;2c1;2c  Serpent, Triple DES oraz Twofish. Tryby działania: LRW (CBC
   obsługiwane dla wstecznej kompatybilności).
 
 %package -n kernel%{_alt_kernel}-misc-%{name}
 Summary:	Linux kernel modules for TrueCrypt
 Summary(pl.UTF-8):	Moduły jądra Linuksa dla TrueCrypta
-Release:	%{release}@%{_kernel_ver_str}
+Release:	%{_rel}@%{_kernel_ver_str}
 Group:		Base/Kernel
 %if %{with dist_kernel}
 %requires_releq_kernel_up
 Requires(postun):	%releq_kernel_up
 %endif
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name} = %{version}-%{_rel}
 Requires:	modutils >= 2.4.6-4
 
 %description -n kernel%{_alt_kernel}-misc-%{name}
@@ -83,13 +84,13 @@ Moduły jądra Linuksa dla TrueCrypta
 %package -n kernel%{_alt_kernel}-smp-misc-%{name}
 Summary:	Linux SMP kernel modules for TrueCrypt
 Summary(pl.UTF-8):	Moduły jądra Linuksa SMP dla TrueCrypta
-Release:	%{release}@%{_kernel_ver_str}
+Release:	%{_rel}@%{_kernel_ver_str}
 Group:		Base/Kernel
 %if %{with dist_kernel}
 %requires_releq_kernel_smp
 Requires(postun):	%releq_kernel_smp
 %endif
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name} = %{version}-%{_rel}
 Requires:	modutils >= 2.4.6-4
 
 %description -n kernel%{_alt_kernel}-smp-misc-%{name}
