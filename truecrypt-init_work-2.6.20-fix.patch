@@ -1,0 +1,15 @@
+diff -NurpP --minimal truecrypt-4.2a.clean/Linux/Kernel/Dm-target.c truecrypt-4.2a/Linux/Kernel/Dm-target.c
+--- truecrypt-4.2a.clean/Linux/Kernel/Dm-target.c	2007-02-27 13:21:08.000000000 +0100
++++ truecrypt-4.2a/Linux/Kernel/Dm-target.c	2007-02-27 13:29:03.000000000 +0100
+@@ -435,7 +435,11 @@ static int truecrypt_endio (struct bio *
+ 		bio_put (bio);
+ 
+ 		// Queue decryption to leave completion interrupt ASAP
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,20)
++		INIT_WORK (&bc->work, work_process);
++#else
+ 		INIT_WORK (&bc->work, work_process, bc);
++#endif /* LINUX_VERSION_CODE >= 2.6.20 */
+ 		trace (3, "queue_work (%p)\n", work_queue);
+ 		queue_work (work_queue, &bc->work);
+ 		return error;

@@ -1,0 +1,32 @@
+diff -NurpP --minimal truecrypt-4.2a.orig/Linux/Kernel/Dm-target.c truecrypt-4.2a/Linux/Kernel/Dm-target.c
+--- truecrypt-4.2a.orig/Linux/Kernel/Dm-target.c	2007-02-27 14:19:40.000000000 +0100
++++ truecrypt-4.2a/Linux/Kernel/Dm-target.c	2007-02-27 14:24:15.000000000 +0100
+@@ -127,9 +127,13 @@ static void *malloc_wait (mempool_t *poo
+ 
+ 		if (p)
+ 			return p;
+-
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,20)
++		trace (3, "congestion_wait\n");
++		congestion_wait (direction, HZ / 50);
++#else
+ 		trace (3, "blk_congestion_wait\n");
+ 		blk_congestion_wait (direction, HZ / 50);
++#endif
+ 	}
+ }
+ 
+@@ -504,8 +508,13 @@ static int truecrypt_map (struct dm_targ
+ 	trace (3, "bio_alloc (%hd)\n", bio_segments (bio));
+ 	while (!(bion = bio_alloc (GFP_NOIO | __GFP_NOMEMALLOC, bio_segments (bio))))
+ 	{
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,20)
++		trace (3, "congestion_wait\n");
++		congestion_wait (bio_data_dir (bio), HZ / 50);
++#else
+ 		trace (3, "blk_congestion_wait\n");
+ 		blk_congestion_wait (bio_data_dir (bio), HZ / 50);
++#endif
+ 	}
+ 
+ 	bion->bi_bdev = tc->dev->bdev;
