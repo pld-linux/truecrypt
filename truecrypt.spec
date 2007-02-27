@@ -75,7 +75,7 @@ Group:		Base/Kernel
 Requires(postun):	%releq_kernel_up
 %endif
 Requires:	%{name} = %{version}-%{_rel}
-Requires:	modutils >= 2.4.6-4
+Conflicts:	modutils < 2.4.6-4
 
 %description -n kernel%{_alt_kernel}-misc-%{name}
 Linux kernel modules for TrueCrypt.
@@ -93,7 +93,7 @@ Group:		Base/Kernel
 Requires(postun):	%releq_kernel_smp
 %endif
 Requires:	%{name} = %{version}-%{_rel}
-Requires:	modutils >= 2.4.6-4
+Conflicts:	modutils < 2.4.6-4
 
 %description -n kernel%{_alt_kernel}-smp-misc-%{name}
 Linux SMP kernel modules for TrueCrypt.
