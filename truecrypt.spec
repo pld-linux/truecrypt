@@ -7,6 +7,7 @@
 %bcond_without	dist_kernel	# allow non-distribution kernel
 %bcond_without	kernel		# don't build kernel modules
 %bcond_without	smp		# don't build SMP module
+%bcond_without	up		# don't build UP module
 %bcond_without	userspace	# don't build userspace utilities
 %bcond_with	verbose		# verbose build (V=1)
 #
@@ -14,7 +15,7 @@ Summary:	TrueCrypt - Free Open-Source Disk Encryption Software
 Summary(pl.UTF-8):	TrueCrypt - wolnodostępne oprogramowanie do szyfrowania dysków
 Name:		truecrypt
 Version:	4.2a
-%define	   _rel 0.2
+%define	   _rel 0.3
 Release:	%{_rel}
 License:	GPL
 Group:		Base/Kernel
@@ -112,7 +113,7 @@ Moduły jądra Linuksa SMP dla TrueCrypta.
 %if %{with kernel}
 # kernel module(s)
 cd Linux/Kernel
-for cfg in %{?with_dist_kernel:%{?with_smp:smp} up}%{!?with_dist_kernel:nondist}; do
+for cfg in %{?with_dist_kernel:%{?with_up:up} %{?with_smp:smp}}%{!?with_dist_kernel:nondist}; do
 	if [ ! -r "%{_kernelsrcdir}/config-$cfg" ]; then
 		exit 1
 	fi
@@ -134,13 +135,22 @@ for cfg in %{?with_dist_kernel:%{?with_smp:smp} up}%{!?with_dist_kernel:nondist}
 		RCS_FIND_IGNORE="-name '*.ko' -o" \
 		M=$PWD O=$PWD/o KSRC=$PWD/o\
 		%{?with_verbose:V=1}
-	cd ..
-	./build.sh $PWD/Kernel/o
+	
+	%{__make} "KERNEL_SRC=$PWD/o" clean \
+		RCS_FIND_IGNORE="-name '*.ko' -o" \
+		M=$PWD O=$PWD/o KSRC=$PWD/o \
+		%{?with_verbose:V=1}
+
+	%{__make} "KERNEL_SRC=$PWD/o" %{!?with_verbose:NO_WARNINGS=1}
 	for i in truecrypt; do
-		mv Kernel/$i{,-$cfg}.ko
+		mv $i{,-$cfg}.ko
 	done
-	cd -
 done
+cd -
+%endif
+
+%if %{with userspace}
+%{__make} -C Linux/Cli
 %endif
 
 %install
@@ -153,17 +163,7 @@ install Linux/Cli/Man/%{name}.1 $RPM_BUILD_ROOT%{_mandir}/man1
 %endif
 
 %if %{with kernel}
-install -d $RPM_BUILD_ROOT/lib/modules/%{_kernel_ver}{,smp}/misc
-for i in truecrypt; do
-install Linux/Kernel/$i-%{?with_dist_kernel:up}%{!?with_dist_kernel:nondist}.ko \
-	$RPM_BUILD_ROOT/lib/modules/%{_kernel_ver}/misc/$i.ko
-done
-%if %{with smp} && %{with dist_kernel}
-for i in truecrypt; do
-install Linux/Kernel/$i-smp.ko \
-	$RPM_BUILD_ROOT/lib/modules/%{_kernel_ver}smp/misc/$i.ko
-done
-%endif
+%install_kernel_modules -m Linux/Kernel/truecrypt -d kernel/misc
 %endif
 
 %clean
@@ -192,11 +192,11 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with kernel}
 %files -n kernel%{_alt_kernel}-misc-%{name}
 %defattr(644,root,root,755)
-/lib/modules/%{_kernel_ver}/misc/*
+/lib/modules/%{_kernel_ver}/kernel/misc/*.ko*
 
 %if %{with smp} && %{with dist_kernel}
 %files -n kernel%{_alt_kernel}-smp-misc-%{name}
 %defattr(644,root,root,755)
-/lib/modules/%{_kernel_ver}smp/misc/*
+/lib/modules/%{_kernel_ver}smp/kernel/misc/*.ko*
 %endif
 %endif
