@@ -6,7 +6,7 @@ diff -NurpP --minimal truecrypt-4.2a.orig/Linux/Kernel/Dm-target.c truecrypt-4.2
  		if (p)
  			return p;
 -
-+#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,20)
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,19)
 +		trace (3, "congestion_wait\n");
 +		congestion_wait (direction, HZ / 50);
 +#else
@@ -20,7 +20,7 @@ diff -NurpP --minimal truecrypt-4.2a.orig/Linux/Kernel/Dm-target.c truecrypt-4.2
  	trace (3, "bio_alloc (%hd)\n", bio_segments (bio));
  	while (!(bion = bio_alloc (GFP_NOIO | __GFP_NOMEMALLOC, bio_segments (bio))))
  	{
-+#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,20)
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,19)
 +		trace (3, "congestion_wait\n");
 +		congestion_wait (bio_data_dir (bio), HZ / 50);
 +#else
