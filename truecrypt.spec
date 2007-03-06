@@ -2,6 +2,7 @@
 # - requires modutils???
 # - missing kernel-module-build BR?
 # - License: specfile from r1.1 contained different License than GPL
+# - test the smp version
 #
 # Conditional build:
 %bcond_without	dist_kernel	# allow non-distribution kernel
@@ -15,7 +16,7 @@ Summary:	TrueCrypt - Free Open-Source Disk Encryption Software
 Summary(pl.UTF-8):	TrueCrypt - wolnodostępne oprogramowanie do szyfrowania dysków
 Name:		truecrypt
 Version:	4.2a
-%define	   _rel 0.3
+%define	_rel	0.4
 Release:	%{_rel}
 License:	GPL
 Group:		Base/Kernel
