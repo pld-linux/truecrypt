@@ -29,6 +29,7 @@ Patch2:		%{name}-init_work-2.6.20-fix.patch
 Patch3:		%{name}-blk_congestion_wait-2.6.20-fix.patch
 URL:		http://www.truecrypt.org/
 %if %{with kernel}
+BuildRequires:	kernel-source
 Requires(post,postun):	/sbin/depmod
 %endif
 Requires:	device-mapper
