@@ -1,0 +1,15 @@
+--- truecrypt-4.2a.a/Linux/Kernel/Dm-target.c	2007-03-07 15:04:47.000000000 +0100
++++ truecrypt-4.2a/Linux/Kernel/Dm-target.c	2007-03-08 01:48:38.000000000 +0100
+@@ -69,7 +89,12 @@
+ };
+ 
+ static struct workqueue_struct *work_queue = NULL;
++
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,20)
++static struct kmem_cache *bio_ctx_cache = NULL;
++#else
+ static kmem_cache_t *bio_ctx_cache = NULL;
++#endif
+ 
+ #define READ_ONLY(tc) (tc->flags & TC_READ_ONLY)
+ #define HID_VOL_PROT(tc) (tc->flags & TC_HIDDEN_VOLUME_PROTECTION)
