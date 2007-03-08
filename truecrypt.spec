@@ -16,7 +16,7 @@ Summary:	TrueCrypt - Free Open-Source Disk Encryption Software
 Summary(pl.UTF-8):	TrueCrypt - wolnodostępne oprogramowanie do szyfrowania dysków
 Name:		truecrypt
 Version:	4.2a
-%define	_rel	0.5
+%define	_rel	0.6
 Release:	%{_rel}
 License:	GPL
 Group:		Base/Kernel
@@ -27,10 +27,10 @@ Patch0:		%{name}-build.patch
 Patch1:		%{name}-4.2a_kernel-2.6.18-rc1_fix.patch
 Patch2:		%{name}-init_work-2.6.20-fix.patch
 Patch3:		%{name}-blk_congestion_wait-2.6.20-fix.patch
+Patch4:		%{name}-dm_dev.patch
+Patch5:		%{name}-kmem_cache-2.6.20-fix.patch
 URL:		http://www.truecrypt.org/
 %if %{with kernel}
-# XXX this is temporary hack
-BuildRequires:	kernel-source
 Requires(post,postun):	/sbin/depmod
 %endif
 Requires:	device-mapper
@@ -111,6 +111,8 @@ Moduły jądra Linuksa SMP dla TrueCrypta.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
+%patch5 -p1
 
 %build
 %if %{with kernel}
@@ -124,9 +126,6 @@ for cfg in %{?with_dist_kernel:%{?with_up:up} %{?with_smp:smp}}%{!?with_dist_ker
 	ln -sf %{_kernelsrcdir}/config-$cfg o/.config
 	ln -sf %{_kernelsrcdir}/Module.symvers-$cfg o/Module.symvers
 	ln -sf %{_kernelsrcdir}/include/linux/autoconf-$cfg.h o/include/linux/autoconf.h
-	install -d o/drivers
-	ln -sf %{_kernelsrcdir}/drivers/md o/drivers
-	#ln -sf %{_kernelsrcdir}/Makefile o/Makefile
 %if %{with dist_kernel}
 	%{__make} -C %{_kernelsrcdir} O=$PWD/o prepare scripts
 %else
