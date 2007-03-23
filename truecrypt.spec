@@ -7,8 +7,6 @@
 # Conditional build:
 %bcond_without	dist_kernel	# allow non-distribution kernel
 %bcond_without	kernel		# don't build kernel modules
-%bcond_without	smp		# don't build SMP module
-%bcond_without	up		# don't build UP module
 %bcond_without	userspace	# don't build userspace utilities
 %bcond_with	verbose		# verbose build (V=1)
 #
@@ -30,6 +28,7 @@ Patch3:		%{name}-blk_congestion_wait-2.6.20-fix.patch
 Patch4:		%{name}-dm_dev.patch
 Patch5:		%{name}-kmem_cache-2.6.20-fix.patch
 URL:		http://www.truecrypt.org/
+BuildRequires:	rpmbuild(macros) >= 1.379
 %if %{with kernel}
 Requires(post,postun):	/sbin/depmod
 %endif
@@ -75,8 +74,8 @@ Summary(pl.UTF-8):	Moduły jądra Linuksa dla TrueCrypta
 Release:	%{_rel}@%{_kernel_ver_str}
 Group:		Base/Kernel
 %if %{with dist_kernel}
-%requires_releq_kernel_up
-Requires(postun):	%releq_kernel_up
+%requires_releq_kernel
+Requires(postun):	%releq_kernel
 %endif
 Requires:	%{name} = %{version}-%{_rel}
 Conflicts:	modutils < 2.4.6-4
@@ -86,24 +85,6 @@ Linux kernel modules for TrueCrypt.
 
 %description -n kernel%{_alt_kernel}-misc-%{name} -l pl.UTF-8
 Moduły jądra Linuksa dla TrueCrypta
-
-%package -n kernel%{_alt_kernel}-smp-misc-%{name}
-Summary:	Linux SMP kernel modules for TrueCrypt
-Summary(pl.UTF-8):	Moduły jądra Linuksa SMP dla TrueCrypta
-Release:	%{_rel}@%{_kernel_ver_str}
-Group:		Base/Kernel
-%if %{with dist_kernel}
-%requires_releq_kernel_smp
-Requires(postun):	%releq_kernel_smp
-%endif
-Requires:	%{name} = %{version}-%{_rel}
-Conflicts:	modutils < 2.4.6-4
-
-%description -n kernel%{_alt_kernel}-smp-misc-%{name}
-Linux SMP kernel modules for TrueCrypt.
-
-%description -n kernel%{_alt_kernel}-smp-misc-%{name} -l pl.UTF-8
-Moduły jądra Linuksa SMP dla TrueCrypta.
 
 %prep
 %setup -q
@@ -118,7 +99,7 @@ Moduły jądra Linuksa SMP dla TrueCrypta.
 %if %{with kernel}
 # kernel module(s)
 cd Linux/Kernel
-for cfg in %{?with_dist_kernel:%{?with_up:up} %{?with_smp:smp}}%{!?with_dist_kernel:nondist}; do
+for cfg in %{?with_dist_kernel:dist}%{!?with_dist_kernel:nondist}; do
 	if [ ! -r "%{_kernelsrcdir}/config-$cfg" ]; then
 		exit 1
 	fi
@@ -177,12 +158,6 @@ rm -rf $RPM_BUILD_ROOT
 %postun -n kernel%{_alt_kernel}-misc-%{name}
 %depmod %{_kernel_ver}
 
-%post -n kernel%{_alt_kernel}-smp-misc-%{name}
-%depmod %{_kernel_ver}smp
-
-%postun -n kernel%{_alt_kernel}-smp-misc-%{name}
-%depmod %{_kernel_ver}smp
-
 %if %{with userspace}
 %files
 %defattr(644,root,root,755)
@@ -195,10 +170,3 @@ rm -rf $RPM_BUILD_ROOT
 %files -n kernel%{_alt_kernel}-misc-%{name}
 %defattr(644,root,root,755)
 /lib/modules/%{_kernel_ver}/kernel/misc/*.ko*
-
-%if %{with smp} && %{with dist_kernel}
-%files -n kernel%{_alt_kernel}-smp-misc-%{name}
-%defattr(644,root,root,755)
-/lib/modules/%{_kernel_ver}smp/kernel/misc/*.ko*
-%endif
-%endif
