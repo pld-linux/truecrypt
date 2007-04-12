@@ -30,6 +30,7 @@ Patch5:		%{name}-kmem_cache-2.6.20-fix.patch
 URL:		http://www.truecrypt.org/
 BuildRequires:	rpmbuild(macros) >= 1.379
 %if %{with kernel}
+BuildRequires:	kernel%{_alt_kernel}-module-build >= 3:2.6.20.2
 Requires(post,postun):	/sbin/depmod
 %endif
 Requires:	device-mapper
