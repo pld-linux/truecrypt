@@ -13,20 +13,16 @@
 Summary:	TrueCrypt - Free Open-Source Disk Encryption Software
 Summary(pl.UTF-8):	TrueCrypt - wolnodostępne oprogramowanie do szyfrowania dysków
 Name:		truecrypt
-Version:	4.2a
-%define	_rel	0.6
+Version:	4.3a
+%define	_rel	0.1
 Release:	%{_rel}
 License:	GPL
 Group:		Base/Kernel
 # from truecrypt.org
 Source0:	%{name}-%{version}-source-code.tar.gz
-# Source0-md5:	6e60ead403fe23355f61341ccce68ff1
-Patch0:		%{name}-build.patch
-Patch1:		%{name}-4.2a_kernel-2.6.18-rc1_fix.patch
-Patch2:		%{name}-init_work-2.6.20-fix.patch
-Patch3:		%{name}-blk_congestion_wait-2.6.20-fix.patch
-Patch4:		%{name}-dm_dev.patch
-Patch5:		%{name}-kmem_cache-2.6.20-fix.patch
+# Source0-md5:	8f2536eae16e6044a22b2a82c7003357
+Patch0:		%{name}-4.2a_kernel-2.6.18-rc1_fix.patch
+Patch1:		%{name}-dm_dev.patch
 URL:		http://www.truecrypt.org/
 BuildRequires:	rpmbuild(macros) >= 1.379
 %if %{with kernel}
@@ -88,13 +84,9 @@ Linux kernel modules for TrueCrypt.
 Moduły jądra Linuksa dla TrueCrypta
 
 %prep
-%setup -q
+%setup -q -n %{name}-%{version}-source-code
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
-%patch3 -p1
-%patch4 -p1
-%patch5 -p1
 
 %build
 %if %{with kernel}
@@ -147,7 +139,7 @@ install Linux/Cli/Man/%{name}.1 $RPM_BUILD_ROOT%{_mandir}/man1
 %endif
 
 %if %{with kernel}
-%install_kernel_modules -m Linux/Kernel/truecrypt -d kernel/misc
+%install_kernel_modules -m Linux/Kernel/truecrypt -d misc
 %endif
 
 %clean
@@ -170,4 +162,4 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with kernel}
 %files -n kernel%{_alt_kernel}-misc-%{name}
 %defattr(644,root,root,755)
-/lib/modules/%{_kernel_ver}/kernel/misc/*.ko*
+/lib/modules/%{_kernel_ver}/misc/*.ko*
