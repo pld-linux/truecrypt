@@ -18,8 +18,7 @@ Version:	4.3a
 Release:	%{_rel}
 License:	GPL
 Group:		Base/Kernel
-# from truecrypt.org
-Source0:	%{name}-%{version}-source-code.tar.gz
+Source0:	http://www.truecrypt.org/downloads/%{name}-%{version}-source-code.tar.gz
 # Source0-md5:	8f2536eae16e6044a22b2a82c7003357
 Patch0:		%{name}-4.2a_kernel-2.6.18-rc1_fix.patch
 Patch1:		%{name}-dm_dev.patch
