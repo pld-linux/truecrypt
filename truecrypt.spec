@@ -135,6 +135,7 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{/bin,%{_mandir}/man1}
 install Linux/Cli/%{name} $RPM_BUILD_ROOT/bin
 install Linux/Cli/Man/%{name}.1 $RPM_BUILD_ROOT%{_mandir}/man1
+mv -f Release/Setup\ Files/TrueCrypt\ User\ Guide.pdf TrueCrypt-User-Guide.pdf
 %endif
 
 %if %{with kernel}
@@ -153,7 +154,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with userspace}
 %files
 %defattr(644,root,root,755)
-%doc License.txt Readme.txt
+%doc License.txt Readme.txt TrueCrypt-User-Guide.pdf
 %attr(755,root,root) /bin/%{name}
 %{_mandir}/man1/*
 %endif
