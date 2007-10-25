@@ -1,6 +1,5 @@
 # TODO
 # - requires modutils???
-# - missing kernel-module-build BR?
 # - License: specfile from r1.1 contained different License than GPL
 # - test the smp version
 #
