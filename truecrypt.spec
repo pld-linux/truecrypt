@@ -1,7 +1,6 @@
 # TODO
 # - requires modutils???
 # - License: specfile from r1.1 contained different License than GPL
-# - test the smp version
 #
 # Conditional build:
 %bcond_without	dist_kernel	# allow non-distribution kernel
@@ -13,7 +12,7 @@ Summary:	TrueCrypt - Free Open-Source Disk Encryption Software
 Summary(pl.UTF-8):	TrueCrypt - wolnodostępne oprogramowanie do szyfrowania dysków
 Name:		truecrypt
 Version:	4.3a
-%define	_rel	0.1
+%define	_rel	0.5
 Release:	%{_rel}
 License:	GPL
 Group:		Base/Kernel
@@ -99,7 +98,7 @@ for cfg in %{?with_dist_kernel:dist}%{!?with_dist_kernel:nondist}; do
 	ln -sf %{_kernelsrcdir}/Module.symvers-$cfg o/Module.symvers
 	ln -sf %{_kernelsrcdir}/include/linux/autoconf-$cfg.h o/include/linux/autoconf.h
 %if %{with dist_kernel}
-	%{__make} -C %{_kernelsrcdir} O=$PWD/o prepare scripts
+	%{__make} -j1 -C %{_kernelsrcdir} O=$PWD/o prepare scripts
 %else
 	install -d o/include/config
 	touch o/include/config/MARKER
@@ -124,7 +123,7 @@ cd -
 %endif
 
 %if %{with userspace}
-%{__make} -C Linux/Cli
+%{__make} -j1 -C Linux/Cli
 %endif
 
 %install
