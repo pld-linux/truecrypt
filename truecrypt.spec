@@ -20,6 +20,7 @@ Source0:	http://www.truecrypt.org/downloads/%{name}-%{version}-source-code.tar.g
 # Source0-md5:	8f2536eae16e6044a22b2a82c7003357
 Patch0:		%{name}-4.2a_kernel-2.6.18-rc1_fix.patch
 Patch1:		%{name}-dm_dev.patch
+Patch2:		%{name}-2.6.23.patch
 URL:		http://www.truecrypt.org/
 BuildRequires:	rpmbuild(macros) >= 1.379
 %if %{with kernel}
@@ -84,6 +85,7 @@ Moduły jądra Linuksa dla TrueCrypta
 %setup -q -n %{name}-%{version}-source-code
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 %if %{with kernel}
