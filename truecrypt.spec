@@ -1,34 +1,25 @@
-# TODO
-# - requires modutils???
-# - License: specfile from r1.1 contained different License than GPL
 #
 # Conditional build:
-%bcond_without	dist_kernel	# allow non-distribution kernel
-%bcond_without	kernel		# don't build kernel modules
-%bcond_without	userspace	# don't build userspace utilities
-%bcond_with	verbose		# verbose build (V=1)
 #
+%define		_wxWid_ver	2.8.7
+
 Summary:	TrueCrypt - Free Open-Source Disk Encryption Software
 Summary(pl.UTF-8):	TrueCrypt - wolnodostępne oprogramowanie do szyfrowania dysków
 Name:		truecrypt
-Version:	4.3a
-%define	_rel	0.5
+Version:	5.1a
+%define	_rel	0.1
 Release:	%{_rel}
-License:	GPL
+License:	TrueCrypt License Version 2.4
 Group:		Base/Kernel
-Source0:	http://www.truecrypt.org/downloads/%{name}-%{version}-source-code.tar.gz
-# Source0-md5:	8f2536eae16e6044a22b2a82c7003357
-Patch0:		%{name}-4.2a_kernel-2.6.18-rc1_fix.patch
-Patch1:		%{name}-dm_dev.patch
-Patch2:		%{name}-2.6.23.patch
+#Source0:	http://ftp.uni-kl.de/pub/linux/archlinux/other/truecrypt/TrueCrypt-%{version}-Source.tar.gz
+Source0:	http://www.truecrypt.org/downloads/TrueCrypt-%{version}-Source.tar.gz
+# Source0-md5:	bf8363f2bb3a24c2fcea588b210b3a16
+Source1:    http://ftp.wxwidgets.org/pub/%{_wxWid_ver}/wxWidgets-%{_wxWid_ver}.tar.bz2
+# Source1-md5:	e3455083afdf6404a569a8bf0701cf13
 URL:		http://www.truecrypt.org/
+BuildRequires:	gcc	>= 5:4.0.0
 BuildRequires:	rpmbuild(macros) >= 1.379
-%if %{with kernel}
-BuildRequires:	kernel%{_alt_kernel}-module-build >= 3:2.6.20.2
-Requires(post,postun):	/sbin/depmod
-%endif
-Requires:	device-mapper
-Requires:	losetup
+Requires:	libfuse
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -63,104 +54,26 @@ Główne cechy:
   Serpent, Triple DES oraz Twofish. Tryby działania: LRW (CBC
   obsługiwane dla wstecznej kompatybilności).
 
-%package -n kernel%{_alt_kernel}-misc-%{name}
-Summary:	Linux kernel modules for TrueCrypt
-Summary(pl.UTF-8):	Moduły jądra Linuksa dla TrueCrypta
-Release:	%{_rel}@%{_kernel_ver_str}
-Group:		Base/Kernel
-%if %{with dist_kernel}
-%requires_releq_kernel
-Requires(postun):	%releq_kernel
-%endif
-Requires:	%{name} = %{version}-%{_rel}
-Conflicts:	modutils < 2.4.6-4
-
-%description -n kernel%{_alt_kernel}-misc-%{name}
-Linux kernel modules for TrueCrypt.
-
-%description -n kernel%{_alt_kernel}-misc-%{name} -l pl.UTF-8
-Moduły jądra Linuksa dla TrueCrypta
-
 %prep
-%setup -q -n %{name}-%{version}-source-code
-%patch0 -p1
-%patch1 -p1
-%patch2 -p1
+%setup -q -a1 -n %{name}-%{version}-source
 
 %build
-%if %{with kernel}
-# kernel module(s)
-cd Linux/Kernel
-for cfg in %{?with_dist_kernel:dist}%{!?with_dist_kernel:nondist}; do
-	if [ ! -r "%{_kernelsrcdir}/config-$cfg" ]; then
-		exit 1
-	fi
-	install -d o/include/linux
-	ln -sf %{_kernelsrcdir}/config-$cfg o/.config
-	ln -sf %{_kernelsrcdir}/Module.symvers-$cfg o/Module.symvers
-	ln -sf %{_kernelsrcdir}/include/linux/autoconf-$cfg.h o/include/linux/autoconf.h
-%if %{with dist_kernel}
-	%{__make} -j1 -C %{_kernelsrcdir} O=$PWD/o prepare scripts
-%else
-	install -d o/include/config
-	touch o/include/config/MARKER
-	ln -sf %{_kernelsrcdir}/scripts o/scripts
-%endif
-	%{__make} -C %{_kernelsrcdir} clean \
-		RCS_FIND_IGNORE="-name '*.ko' -o" \
-		M=$PWD O=$PWD/o KSRC=$PWD/o\
-		%{?with_verbose:V=1}
-	
-	%{__make} "KERNEL_SRC=$PWD/o" clean \
-		RCS_FIND_IGNORE="-name '*.ko' -o" \
-		M=$PWD O=$PWD/o KSRC=$PWD/o \
-		%{?with_verbose:V=1}
-
-	%{__make} "KERNEL_SRC=$PWD/o" %{!?with_verbose:NO_WARNINGS=1}
-	for i in truecrypt; do
-		mv $i{,-$cfg}.ko
-	done
-done
-cd -
-%endif
-
-%if %{with userspace}
-%{__make} -j1 -C Linux/Cli
-%endif
+%{__make} WX_ROOT=%{_builddir}/%{name}-%{version}-source/wxWidgets-%{_wxWid_ver} wxbuild
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%if %{with userspace}
-install -d $RPM_BUILD_ROOT{/bin,%{_mandir}/man1}
-install Linux/Cli/%{name} $RPM_BUILD_ROOT/bin
-install Linux/Cli/Man/%{name}.1 $RPM_BUILD_ROOT%{_mandir}/man1
+install -d $RPM_BUILD_ROOT{/%{_bindir},%{_mandir}/man1}
+ls -l Main/truecrypt
+install Main/truecrypt $RPM_BUILD_ROOT%{_bindir}/truecrypt
 mv -f Release/Setup\ Files/TrueCrypt\ User\ Guide.pdf TrueCrypt-User-Guide.pdf
-%endif
-
-%if %{with kernel}
-%install_kernel_modules -m Linux/Kernel/truecrypt -d misc
-%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post -n kernel%{_alt_kernel}-misc-%{name}
-%depmod %{_kernel_ver}
-
-%postun -n kernel%{_alt_kernel}-misc-%{name}
-%depmod %{_kernel_ver}
-
-%if %{with userspace}
 %files
 %defattr(644,root,root,755)
 %doc License.txt Readme.txt TrueCrypt-User-Guide.pdf
-%attr(755,root,root) /bin/%{name}
-%{_mandir}/man1/*
-%endif
-
-%if %{with kernel}
-%files -n kernel%{_alt_kernel}-misc-%{name}
-%defattr(644,root,root,755)
-/lib/modules/%{_kernel_ver}/misc/*.ko*
-%endif
+%attr(755,root,root) %{_bindir}/%{name}
+##%%{_mandir}/man1/*
