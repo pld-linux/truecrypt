@@ -6,20 +6,22 @@
 Summary:	TrueCrypt - Free Open-Source Disk Encryption Software
 Summary(pl.UTF-8):	TrueCrypt - wolnodostępne oprogramowanie do szyfrowania dysków
 Name:		truecrypt
-Version:	5.1a
+Version:	6.0a
 %define	_rel	0.1
 Release:	%{_rel}
 License:	TrueCrypt License Version 2.4
 Group:		Base/Kernel
 #Source0:	http://ftp.uni-kl.de/pub/linux/archlinux/other/truecrypt/TrueCrypt-%{version}-Source.tar.gz
 Source0:	http://www.truecrypt.org/downloads/TrueCrypt-%{version}-Source.tar.gz
-# Source0-md5:	bf8363f2bb3a24c2fcea588b210b3a16
+# Source0-md5:	7281d485a175c161e90526447d9d3fd0
 Source1:    http://ftp.wxwidgets.org/pub/%{_wxWid_ver}/wxWidgets-%{_wxWid_ver}.tar.bz2
 # Source1-md5:	e3455083afdf6404a569a8bf0701cf13
 URL:		http://www.truecrypt.org/
 BuildRequires:	gcc	>= 5:4.0.0
+BuildRequires:	libfuse-devel
 BuildRequires:	rpmbuild(macros) >= 1.379
 Requires:	libfuse
+Requires:	losetup
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
