@@ -1,13 +1,15 @@
 #
 # Conditional build:
 #
+%bcond_with	nogui	# build without gui
+
 %define		_wxWid_ver	2.8.7
 
 Summary:	TrueCrypt - Free Open-Source Disk Encryption Software
 Summary(pl.UTF-8):	TrueCrypt - wolnodostępne oprogramowanie do szyfrowania dysków
 Name:		truecrypt
 Version:	6.0a
-%define	_rel	0.1
+%define	_rel	0.2
 Release:	%{_rel}
 License:	TrueCrypt License Version 2.4
 Group:		Base/Kernel
@@ -60,8 +62,13 @@ Główne cechy:
 %setup -q -a1 -n %{name}-%{version}-source
 
 %build
+%if %{with nogui}
+%{__make} NOGUI=1 WX_ROOT=%{_builddir}/%{name}-%{version}-source/wxWidgets-%{_wxWid_ver} wxbuild
+%{__make} NOGUI=1
+%else
 %{__make} WX_ROOT=%{_builddir}/%{name}-%{version}-source/wxWidgets-%{_wxWid_ver} wxbuild
 %{__make}
+%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
