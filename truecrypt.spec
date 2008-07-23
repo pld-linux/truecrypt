@@ -13,7 +13,9 @@ Release:	%{_rel}
 License:	TrueCrypt License Version 2.4
 Group:		Base/Kernel
 #Source0:	http://ftp.uni-kl.de/pub/linux/archlinux/other/truecrypt/TrueCrypt-%{version}-Source.tar.gz
-Source0:	http://www.truecrypt.org/downloads/TrueCrypt-%{version}-Source.tar.gz
+# download through form from http://www.truecrypt.org/downloads2.php,
+# then rename source file (spaces are not allowed in SourceX)
+Source0:	TrueCrypt-%{version}-Source.tar.gz
 # Source0-md5:	7281d485a175c161e90526447d9d3fd0
 Source1:	http://ftp.wxwidgets.org/pub/%{wx_ver}/wxWidgets-%{wx_ver}.tar.bz2
 # Source1-md5:	e3455083afdf6404a569a8bf0701cf13
@@ -21,7 +23,6 @@ URL:		http://www.truecrypt.org/
 BuildRequires:	gcc >= 5:4.0.0
 BuildRequires:	libfuse-devel
 BuildRequires:	rpmbuild(macros) >= 1.379
-Requires:	libfuse
 Requires:	losetup
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -58,7 +59,7 @@ Główne cechy:
   obsługiwane dla wstecznej kompatybilności).
 
 %prep
-%setup -q -a1 -n %{name}-%{version}-source
+%setup -q -n %{name}-%{version}-source -a1
 
 %build
 %if %{with gui}
