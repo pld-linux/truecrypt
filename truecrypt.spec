@@ -1,9 +1,8 @@
 #
 # Conditional build:
+%bcond_without	gui	# build without GUI
 #
-%bcond_with	nogui	# build without gui
-
-%define		_wxWid_ver	2.8.7
+%define		wx_ver	2.8.7
 
 Summary:	TrueCrypt - Free Open-Source Disk Encryption Software
 Summary(pl.UTF-8):	TrueCrypt - wolnodostępne oprogramowanie do szyfrowania dysków
@@ -16,10 +15,10 @@ Group:		Base/Kernel
 #Source0:	http://ftp.uni-kl.de/pub/linux/archlinux/other/truecrypt/TrueCrypt-%{version}-Source.tar.gz
 Source0:	http://www.truecrypt.org/downloads/TrueCrypt-%{version}-Source.tar.gz
 # Source0-md5:	7281d485a175c161e90526447d9d3fd0
-Source1:    http://ftp.wxwidgets.org/pub/%{_wxWid_ver}/wxWidgets-%{_wxWid_ver}.tar.bz2
+Source1:	http://ftp.wxwidgets.org/pub/%{wx_ver}/wxWidgets-%{wx_ver}.tar.bz2
 # Source1-md5:	e3455083afdf6404a569a8bf0701cf13
 URL:		http://www.truecrypt.org/
-BuildRequires:	gcc	>= 5:4.0.0
+BuildRequires:	gcc >= 5:4.0.0
 BuildRequires:	libfuse-devel
 BuildRequires:	rpmbuild(macros) >= 1.379
 Requires:	libfuse
@@ -62,19 +61,22 @@ Główne cechy:
 %setup -q -a1 -n %{name}-%{version}-source
 
 %build
-%if %{with nogui}
-%{__make} NOGUI=1 WX_ROOT=%{_builddir}/%{name}-%{version}-source/wxWidgets-%{_wxWid_ver} wxbuild
-%{__make} NOGUI=1
+%if %{with gui}
+%{__make} wxbuild \
+	NOGUI=1 \
+	WX_ROOT=%{_builddir}/%{name}-%{version}-source/wxWidgets-%{wx_ver}
+%{__make} \
+	NOGUI=1
 %else
-%{__make} WX_ROOT=%{_builddir}/%{name}-%{version}-source/wxWidgets-%{_wxWid_ver} wxbuild
+%{__make} wxbuild \
+	WX_ROOT=%{_builddir}/%{name}-%{version}-source/wxWidgets-%{wx_ver}
 %{__make}
 %endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
+install -d $RPM_BUILD_ROOT{%{_bindir},%{_mandir}/man1}
 
-install -d $RPM_BUILD_ROOT{/%{_bindir},%{_mandir}/man1}
-ls -l Main/truecrypt
 install Main/truecrypt $RPM_BUILD_ROOT%{_bindir}/truecrypt
 mv -f Release/Setup\ Files/TrueCrypt\ User\ Guide.pdf TrueCrypt-User-Guide.pdf
 
