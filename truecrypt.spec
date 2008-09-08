@@ -62,7 +62,7 @@ Główne cechy:
 %setup -q -n %{name}-%{version}-source -a1
 
 %build
-%if %{with gui}
+%if %{without gui}
 %{__make} wxbuild \
 	NOGUI=1 \
 	WX_ROOT=%{_builddir}/%{name}-%{version}-source/wxWidgets-%{wx_ver}
