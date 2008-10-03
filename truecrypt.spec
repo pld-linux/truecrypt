@@ -75,12 +75,20 @@ Główne cechy:
 %build
 %if %{without gui}
 %{__make} wxbuild \
+	CC="%{__cc}" \
+	CXX="%{__cxx}" \
+	CFLAGS="%{rpmcflags}" \
+	CXXFLAGS="%{rpmcxxflags}" \
 	NOGUI=1 \
 	WX_ROOT=%{_builddir}/%{name}-%{version}-source/wxWidgets-%{wx_ver}
 %{__make} \
 	NOGUI=1
 %else
 %{__make} wxbuild \
+	CC="%{__cc}" \
+	CXX="%{__cxx}" \
+	CFLAGS="%{rpmcflags}" \
+	CXXFLAGS="%{rpmcxxflags}" \
 	WX_ROOT=%{_builddir}/%{name}-%{version}-source/wxWidgets-%{wx_ver}
 %{__make}
 %endif
