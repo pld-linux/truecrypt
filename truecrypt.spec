@@ -1,15 +1,18 @@
 #
 # Conditional build:
 %bcond_without	gui	# build without GUI
-#
-%define		wx_ver	2.8.7
+%if "%{pld_release}" == "ac"
+%bcond_without		gcc4	# use gcc4* packages for building
+%else
+%bcond_with		gcc4	# use gcc4* packages for building
+%endif
 
+%define		wx_ver	2.8.7
 Summary:	TrueCrypt - Free Open-Source Disk Encryption Software
 Summary(pl.UTF-8):	TrueCrypt - wolnodostępne oprogramowanie do szyfrowania dysków
 Name:		truecrypt
 Version:	6.0a
-%define	_rel	0.2
-Release:	%{_rel}
+Release:	0.2
 License:	TrueCrypt License Version 2.4
 Group:		Base/Kernel
 #Source0:	http://ftp.uni-kl.de/pub/linux/archlinux/other/truecrypt/TrueCrypt-%{version}-Source.tar.gz
@@ -22,9 +25,17 @@ Source1:	http://ftp.wxwidgets.org/pub/%{wx_ver}/wxWidgets-%{wx_ver}.tar.bz2
 URL:		http://www.truecrypt.org/
 BuildRequires:	gcc >= 5:4.0.0
 BuildRequires:	libfuse-devel
+BuildRequires:	rpm >= 4.4.9-56
 BuildRequires:	rpmbuild(macros) >= 1.379
 Requires:	losetup
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+%if %{with gcc4}
+# add suffix, but allow ccache, etc in ~/.rpmmacros
+%{expand:%%define	__cc	%(echo '%__cc' | sed -e 's,-gcc,-gcc4,')}
+%{expand:%%define	__cxx	%(echo '%__cxx' | sed -e 's,-g++,-g++4,')}
+%{expand:%%define	__cpp	%(echo '%__cpp' | sed -e 's,-gcc,-gcc4,')}
+%endif
 
 %description
 Main Features:
