@@ -7,21 +7,21 @@
 %bcond_with		gcc4	# use gcc4* packages for building
 %endif
 
-%define		wx_ver	2.8.7
+%define		wx_ver	2.8.9
 Summary:	TrueCrypt - Free Open-Source Disk Encryption Software
 Summary(pl.UTF-8):	TrueCrypt - wolnodostępne oprogramowanie do szyfrowania dysków
 Name:		truecrypt
-Version:	6.0a
-Release:	0.2
-License:	TrueCrypt License Version 2.4
+Version:	6.2a
+Release:	0.1
+License:	TrueCrypt License Version 2.6
 Group:		Base/Kernel
-#Source0:	http://ftp.uni-kl.de/pub/linux/archlinux/other/truecrypt/TrueCrypt-%{version}-Source.tar.gz
-# download through form from http://www.truecrypt.org/downloads2.php,
+# Source download through form from http://www.truecrypt.org/downloads2.php,
 # then rename source file (spaces are not allowed in SourceX)
 Source0:	TrueCrypt-%{version}-Source.tar.gz
-# Source0-md5:	7281d485a175c161e90526447d9d3fd0
 Source1:	http://ftp.wxwidgets.org/pub/%{wx_ver}/wxWidgets-%{wx_ver}.tar.bz2
-# Source1-md5:	e3455083afdf6404a569a8bf0701cf13
+Source2:	ftp://ftp.rsasecurity.com/pub/pkcs/pkcs-11/v2-20/pkcs11.h	
+Source3:	ftp://ftp.rsasecurity.com/pub/pkcs/pkcs-11/v2-20/pkcs11f.h
+Source4:	ftp://ftp.rsasecurity.com/pub/pkcs/pkcs-11/v2-20/pkcs11t.h
 URL:		http://www.truecrypt.org/
 BuildRequires:	gcc >= 5:4.0.0
 BuildRequires:	libfuse-devel
@@ -71,6 +71,8 @@ Główne cechy:
 
 %prep
 %setup -q -n %{name}-%{version}-source -a1
+cp %{SOURCE2} %{SOURCE3} %{SOURCE4} .
+
 
 %build
 %if %{without gui}
@@ -82,7 +84,8 @@ Główne cechy:
 	NOGUI=1 \
 	WX_ROOT=%{_builddir}/%{name}-%{version}-source/wxWidgets-%{wx_ver}
 %{__make} \
-	NOGUI=1
+	NOGUI=1 \
+	WXSTATIC=1 
 %else
 %{__make} wxbuild \
 	CC="%{__cc}" \
@@ -90,7 +93,8 @@ Główne cechy:
 	CFLAGS="%{rpmcflags}" \
 	CXXFLAGS="%{rpmcxxflags}" \
 	WX_ROOT=%{_builddir}/%{name}-%{version}-source/wxWidgets-%{wx_ver}
-%{__make}
+%{__make} \
+	WXSTATIC=1  
 %endif
 
 %install
