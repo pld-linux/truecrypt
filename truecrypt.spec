@@ -11,15 +11,15 @@
 Summary:	TrueCrypt - Free Open-Source Disk Encryption Software
 Summary(pl.UTF-8):	TrueCrypt - wolnodostępne oprogramowanie do szyfrowania dysków
 Name:		truecrypt
-Version:	6.3
-Release:    1	
+Version:	6.3a
+Release:	1
 License:	TrueCrypt License Version 2.6
 Group:		Base/Kernel
 # Source download through form from http://www.truecrypt.org/downloads2.php,
 # then rename source file (spaces are not allowed in SourceX)
 Source0:	TrueCrypt-%{version}-Source.tar.gz
 Source1:	http://ftp.wxwidgets.org/pub/%{wx_ver}/wxWidgets-%{wx_ver}.tar.bz2
-Source2:	ftp://ftp.rsasecurity.com/pub/pkcs/pkcs-11/v2-20/pkcs11.h	
+Source2:	ftp://ftp.rsasecurity.com/pub/pkcs/pkcs-11/v2-20/pkcs11.h
 Source3:	ftp://ftp.rsasecurity.com/pub/pkcs/pkcs-11/v2-20/pkcs11f.h
 Source4:	ftp://ftp.rsasecurity.com/pub/pkcs/pkcs-11/v2-20/pkcs11t.h
 URL:		http://www.truecrypt.org/
@@ -85,7 +85,7 @@ cp %{SOURCE2} %{SOURCE3} %{SOURCE4} .
 	WX_ROOT=%{_builddir}/%{name}-%{version}-source/wxWidgets-%{wx_ver}
 %{__make} \
 	NOGUI=1 \
-	WXSTATIC=1 
+	WXSTATIC=1
 %else
 %{__make} wxbuild \
 	CC="%{__cc}" \
@@ -94,7 +94,7 @@ cp %{SOURCE2} %{SOURCE3} %{SOURCE4} .
 	CXXFLAGS="%{rpmcxxflags}" \
 	WX_ROOT=%{_builddir}/%{name}-%{version}-source/wxWidgets-%{wx_ver}
 %{__make} \
-	WXSTATIC=1  
+	WXSTATIC=1
 %endif
 
 %install
