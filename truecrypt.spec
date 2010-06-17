@@ -18,6 +18,7 @@ Group:		Base/Kernel
 # Source download through form from http://www.truecrypt.org/downloads2.php,
 # then rename source file (spaces are not allowed in SourceX)
 Source0:	TrueCrypt-%{version}-Source.tar.gz
+# Source0-md5:	0a7cc9a340df0aa0a86e8f2ff3fdda92
 Source1:	http://ftp.wxwidgets.org/pub/%{wx_ver}/wxWidgets-%{wx_ver}.tar.bz2
 Source2:	ftp://ftp.rsasecurity.com/pub/pkcs/pkcs-11/v2-20/pkcs11.h
 Source3:	ftp://ftp.rsasecurity.com/pub/pkcs/pkcs-11/v2-20/pkcs11f.h
@@ -82,7 +83,8 @@ cp %{SOURCE2} %{SOURCE3} %{SOURCE4} .
 	CFLAGS="%{rpmcflags}" \
 	CXXFLAGS="%{rpmcxxflags}" \
 	NOGUI=1 \
-	WX_ROOT=%{_builddir}/%{name}-%{version}-source/wxWidgets-%{wx_ver}
+	WX_ROOT=%{_builddir}/%{name}-%{version}-source/wxWidgets-%{wx_ver} \
+	VERBOSE=1
 %{__make} \
 	NOGUI=1 \
 	WXSTATIC=1
@@ -92,7 +94,8 @@ cp %{SOURCE2} %{SOURCE3} %{SOURCE4} .
 	CXX="%{__cxx}" \
 	CFLAGS="%{rpmcflags}" \
 	CXXFLAGS="%{rpmcxxflags}" \
-	WX_ROOT=%{_builddir}/%{name}-%{version}-source/wxWidgets-%{wx_ver}
+	WX_ROOT=%{_builddir}/%{name}-%{version}-source/wxWidgets-%{wx_ver} \
+	VERBOSE=1
 %{__make} \
 	WXSTATIC=1
 %endif
