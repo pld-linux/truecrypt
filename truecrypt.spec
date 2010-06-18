@@ -12,7 +12,7 @@ Summary:	TrueCrypt - Free Open-Source Disk Encryption Software
 Summary(pl.UTF-8):	TrueCrypt - wolnodostępne oprogramowanie do szyfrowania dysków
 Name:		truecrypt
 Version:	6.3a
-Release:	1
+Release:	2
 License:	TrueCrypt License Version 2.6
 Group:		Base/Kernel
 # Source download through form from http://www.truecrypt.org/downloads2.php,
