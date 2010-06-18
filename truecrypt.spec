@@ -18,11 +18,15 @@ Group:		Base/Kernel
 # Source download through form from http://www.truecrypt.org/downloads2.php,
 # then rename source file (spaces are not allowed in SourceX)
 Source0:	TrueCrypt-%{version}-Source.tar.gz
-# Source0-md5:	0a7cc9a340df0aa0a86e8f2ff3fdda92
+# Source0-md5:	0815ed82f3866040e4be6e82aef4a716
 Source1:	http://ftp.wxwidgets.org/pub/%{wx_ver}/wxWidgets-%{wx_ver}.tar.bz2
+# Source1-md5:	b0b2d0f6915a21ca6f33896ee8f50387
 Source2:	ftp://ftp.rsasecurity.com/pub/pkcs/pkcs-11/v2-20/pkcs11.h
+# Source2-md5:	713ac88786b436a5df02bface7dfce45
 Source3:	ftp://ftp.rsasecurity.com/pub/pkcs/pkcs-11/v2-20/pkcs11f.h
+# Source3-md5:	652434a5793eb14aae7b5baa07f6cfc7
 Source4:	ftp://ftp.rsasecurity.com/pub/pkcs/pkcs-11/v2-20/pkcs11t.h
+# Source4-md5:	aeebc839b98e672982abf566e6a25525
 URL:		http://www.truecrypt.org/
 BuildRequires:	gcc >= 5:4.0.0
 BuildRequires:	libfuse-devel
