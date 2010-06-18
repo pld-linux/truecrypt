@@ -29,9 +29,13 @@ Source4:	ftp://ftp.rsasecurity.com/pub/pkcs/pkcs-11/v2-20/pkcs11t.h
 # Source4-md5:	aeebc839b98e672982abf566e6a25525
 URL:		http://www.truecrypt.org/
 BuildRequires:	gcc >= 5:4.0.0
+BuildRequires:	gtk+2-devel
 BuildRequires:	libfuse-devel
+BuildRequires:	libstdc++-devel
+BuildRequires:	pkgconfig
 BuildRequires:	rpm >= 4.4.9-56
 BuildRequires:	rpmbuild(macros) >= 1.379
+BuildRequires:	xorg-lib-libSM-devel
 Requires:	losetup
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
