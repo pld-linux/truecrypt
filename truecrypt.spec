@@ -29,13 +29,13 @@ Source4:	ftp://ftp.rsasecurity.com/pub/pkcs/pkcs-11/v2-20/pkcs11t.h
 # Source4-md5:	aeebc839b98e672982abf566e6a25525
 URL:		http://www.truecrypt.org/
 BuildRequires:	gcc >= 5:4.0.0
-BuildRequires:	gtk+2-devel
+%{?with_gui:BuildRequires:	gtk+2-devel}
 BuildRequires:	libfuse-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	pkgconfig
 BuildRequires:	rpm >= 4.4.9-56
 BuildRequires:	rpmbuild(macros) >= 1.379
-BuildRequires:	xorg-lib-libSM-devel
+%{?with_gui:BuildRequires:	xorg-lib-libSM-devel}
 Requires:	losetup
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -84,29 +84,17 @@ cp %{SOURCE2} %{SOURCE3} %{SOURCE4} .
 
 
 %build
-%if %{without gui}
-%{__make} wxbuild \
-	CC="%{__cc}" \
-	CXX="%{__cxx}" \
-	CFLAGS="%{rpmcflags}" \
-	CXXFLAGS="%{rpmcxxflags}" \
-	NOGUI=1 \
-	WX_ROOT=%{_builddir}/%{name}-%{version}-source/wxWidgets-%{wx_ver} \
-	VERBOSE=1
-%{__make} \
-	NOGUI=1 \
-	WXSTATIC=1
-%else
 %{__make} wxbuild \
 	CC="%{__cc}" \
 	CXX="%{__cxx}" \
 	CFLAGS="%{rpmcflags}" \
 	CXXFLAGS="%{rpmcxxflags}" \
 	WX_ROOT=%{_builddir}/%{name}-%{version}-source/wxWidgets-%{wx_ver} \
+	%{!?with_gui:NOGUI=1} \
 	VERBOSE=1
 %{__make} \
+	%{!?with_gui:NOGUI=1} \
 	WXSTATIC=1
-%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
