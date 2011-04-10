@@ -36,6 +36,7 @@ BuildRequires:	pkgconfig
 BuildRequires:	rpm >= 4.4.9-56
 BuildRequires:	rpmbuild(macros) >= 1.379
 %{?with_gui:BuildRequires:	xorg-lib-libSM-devel}
+Requires:	device-mapper
 Requires:	losetup
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
