@@ -7,20 +7,20 @@
 %bcond_with		gcc4	# use gcc4* packages for building
 %endif
 
-%define		wx_ver	2.8.11
+%define		wx_ver	2.8.12
 Summary:	TrueCrypt - Free Open-Source Disk Encryption Software
 Summary(pl.UTF-8):	TrueCrypt - wolnodostępne oprogramowanie do szyfrowania dysków
 Name:		truecrypt
-Version:	7.0a
+Version:	7.1
 Release:	1
 License:	TrueCrypt License Version 3.0
 Group:		Base/Kernel
-# Source download through form from http://www.truecrypt.org/downloads2.php,
+# Source download through form from http://www.truecrypt.org/downloads2,
 # then rename source file (spaces are not allowed in SourceX)
 Source0:	TrueCrypt-%{version}-Source.tar.gz
-# Source0-md5:	0a61616bc5c5ad90e876b4014c004ac9
-Source1:	http://ftp.wxwidgets.org/pub/%{wx_ver}/wxWidgets-%{wx_ver}.tar.bz2
-# Source1-md5:	303a2d5aeb6c79460c8088193d799147
+# Source0-md5:	a8268630a870faff07af940f63fb29eb
+Source1:	http://downloads.sourceforge.net/wxwindows/wxWidgets-%{wx_ver}.tar.bz2
+# Source1-md5:	4103e37e277abeb8aee607b990c215c4
 Source2:	ftp://ftp.rsasecurity.com/pub/pkcs/pkcs-11/v2-20/pkcs11.h
 # Source2-md5:	713ac88786b436a5df02bface7dfce45
 Source3:	ftp://ftp.rsasecurity.com/pub/pkcs/pkcs-11/v2-20/pkcs11f.h
