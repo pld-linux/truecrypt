@@ -15,7 +15,7 @@ Version:	7.1a
 Release:	1
 License:	TrueCrypt License Version 3.0
 Group:		Base/Kernel
-Source0:	http://www.truecrypt.org/download/transient/0d3fab254298c015e75a/TrueCrypt%20%{version}%20Source.tar.gz
+Source0:	http://www.truecrypt.org/download/transient/0d3fab254298c015e75a/TrueCrypt%20%{version}%20Source.tar.gz?/TrueCrypt_%{version}_Source.tar.gz
 # Source0-md5:	102d9652681db11c813610882332ae48
 Source1:	http://downloads.sourceforge.net/wxwindows/wxWidgets-%{wx_ver}.tar.bz2
 # Source1-md5:	4103e37e277abeb8aee607b990c215c4
